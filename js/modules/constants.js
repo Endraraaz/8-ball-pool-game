@@ -7,7 +7,7 @@ const COLOR = {
 };
 
 // game_environment.js
-const DELTA = 1/100;
+const DELTA = 1 / 100;
 
 // stick.js
 const STICK_ORIGIN = new Vector(1030, 11);

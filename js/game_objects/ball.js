@@ -1,9 +1,7 @@
 class Ball {
-    constructor(position, color){
+    constructor(position, color) {
         this.position = position;
-
         this.velocity = new Vector();
-
         this.moving = false;
         this.sprite = getBallSpritesByColor(color);
     };
@@ -11,10 +9,9 @@ class Ball {
     update = (delta) => {
 
         this.position.addTo(this.velocity.multiply(delta));
-
         this.velocity = this.velocity.multiply(GRAVITY);
 
-        if(this.velocity.length() < 5) {
+        if (this.velocity.length() < 5) {
             this.velocity = new Vector();
             this.moving = false;
         };

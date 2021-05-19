@@ -10,11 +10,11 @@ class Canvas {
 
     drawImage = (image, position, origin, rotation = 0) => {
 
-        if(!position){
+        if (!position) {
             position = new Vector();
         };
 
-        if(!origin){
+        if (!origin) {
             origin = new Vector();
         };
 
@@ -27,7 +27,7 @@ class Canvas {
         console.log(image)
         this.canvasCtx.drawImage(image, -origin.x, -origin.y);
         this.canvasCtx.restore();
-        
+
     };
 };
 

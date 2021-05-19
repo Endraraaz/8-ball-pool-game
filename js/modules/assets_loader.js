@@ -37,7 +37,7 @@ loadAssets = (gameCallback) => {
 };
 
 getBallSpritesByColor = (color) => {
-    switch(color){
+    switch (color) {
         case COLOR.RED:
             return sprites.redBall;
         case COLOR.YELLOW:

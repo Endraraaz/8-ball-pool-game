@@ -1,14 +1,13 @@
 class PoolGame {
 
     init = () => {
-        
+
         this.gameEnvironment = new GameEnvironment();
     };
 
     start = () => {
 
         this.init();
-
         this.gameEngine();
 
     };
@@ -18,7 +17,6 @@ class PoolGame {
         canvas.clear();
         poolGame.gameEnvironment.update();
         poolGame.gameEnvironment.draw();
-
         mouse.reset();
 
         requestAnimationFrame(poolGame.gameEngine);

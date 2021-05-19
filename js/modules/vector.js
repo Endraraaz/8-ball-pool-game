@@ -15,11 +15,11 @@ class Vector {
     };
 
     multiply = (scalar) => {
-        
+
         return new Vector(this.x * scalar, this.y * scalar);
     };
 
-    // |v| = sqrt(x^2 + y^2)
+    // |v| = sqrt(x^2 + y)
     length = () => {
 
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
