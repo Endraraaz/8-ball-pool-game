@@ -1,4 +1,7 @@
-handleMouseMove = (event) => {
+/**
+ * Obtains coordinates of mouse pointer and sets value of position on instance of MouseController
+ */
+controlMouseMove = (event) => {
     let x = event.pageX;
     let y = event.pageY;
 
@@ -6,9 +9,12 @@ handleMouseMove = (event) => {
 
 };
 
-handleMouseDown = (event) => {
+/**
+ * Sets mouse button state to pressed.
+ */
+controlMouseDown = (event) => {
 
-    handleMouseMove(event);
+    controlMouseMove(event);
 
     if (event.which === 1) {
         if (!mouse.leftButton.down) {
@@ -29,9 +35,12 @@ handleMouseDown = (event) => {
 
 };
 
-handleMouseUp = (event) => {
+/**
+ * Sets mouse button state to released.
+ */
+controlMouseUp = (event) => {
 
-    handleMouseMove(event);
+    controlMouseMove(event);
 
     if (event.which === 1) {
         mouse.leftButton.down = false;
@@ -43,7 +52,11 @@ handleMouseUp = (event) => {
 
 };
 
-class MouseHandler {
+
+/**
+ * Sets and resets Mouse button state.
+ */
+class MouseController {
     constructor() {
         this.leftButton = new ButtonState();
         this.middleButton = new ButtonState();
@@ -51,11 +64,14 @@ class MouseHandler {
 
         this.position = new Vector();
 
-        document.onmousemove = handleMouseMove;
-        document.onmousedown = handleMouseDown;
-        document.onmouseup = handleMouseUp;
+        document.onmousemove = controlMouseMove;
+        document.onmousedown = controlMouseDown;
+        document.onmouseup = controlMouseUp;
     };
 
+    /**
+     * Resets button state when button is released after pressing.
+     */
     reset = () => {
         this.leftButton.pressed = false;
         this.middleButton.pressed = false;
@@ -64,4 +80,4 @@ class MouseHandler {
 
 };
 
-let mouse = new MouseHandler();
+let mouse = new MouseController();

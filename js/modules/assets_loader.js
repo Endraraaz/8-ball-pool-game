@@ -1,16 +1,24 @@
 let sprites = {};
 let assetsStillLoading = 0;
 
+/**
+ * Loads Assets until assetsStillLoading is true.
+ */
 assetsLoadingLoop = (gameCallback) => {
 
     if (assetsStillLoading) {
-        requestAnimationFrame(assetsLoadingLoop.bind(this, gameCallback));
+        requestAnimationFrame(assetsLoadingLoop.bind(gameCallback));
     }
     else {
         gameCallback;
     };
 };
 
+
+/**
+ * Loads assets by calling assetsLoadingLoop function
+ * @param gameCallback Passes instance of PoolGame class with method start
+ */
 loadAssets = (gameCallback) => {
 
     loadSprites = (fileName) => {
@@ -32,10 +40,17 @@ loadAssets = (gameCallback) => {
     sprites.yellowBall = loadSprites('yellow-ball.png');
     sprites.redBall = loadSprites('red-ball.png');
 
+    /**
+     * Calls method start in instance of PoolGame class.
+     */
     assetsLoadingLoop(gameCallback());
 
 };
 
+
+/**
+ * Selects balls by color and returns its value.
+ */
 getBallSpritesByColor = (color) => {
     switch (color) {
         case COLOR.RED:

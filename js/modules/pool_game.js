@@ -1,3 +1,6 @@
+/**
+ * Initializes the Game Environment and runs Game Engine.
+ */
 class PoolGame {
 
     init = () => {
