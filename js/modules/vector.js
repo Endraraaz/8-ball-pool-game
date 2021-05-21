@@ -11,6 +11,7 @@ class Vector {
         this.y = y;
     };
 
+
     /**
      * @returns new instance of Vector class.
      */
@@ -18,6 +19,18 @@ class Vector {
 
         return new Vector(this.x, this.y);
     };
+
+
+    /**
+     * Performs vector addition x-axis with x-axis and y-axis with y-axis value.
+     * @param {object} vector Passes new object containing x,y value as parameter.
+     * @returns new instance of Vector class.
+     */
+    add = (vector) => {
+
+        return new Vector(this.x + vector.x, this.y + vector.y);
+    };
+
 
     /**
      * Performs vector addition x-axis with x-axis and y-axis with y-axis value.
@@ -27,6 +40,18 @@ class Vector {
         this.x += vector.x;
         this.y += vector.y;
     };
+
+
+    /**
+     * Performs vector subtraction x-axis with x-axis and y-axis with y-axis value.
+     * @param {object} vector Passes new object containing x,y value as parameter.
+     * @returns new instance of Vector class.
+     */
+    subtract = (vector) => {
+
+        return new Vector(this.x - vector.x, this.y - vector.y);
+    };
+
 
     /**
      * Performs scalar multiplication with x-axis and y-axis of object.
@@ -38,6 +63,18 @@ class Vector {
         return new Vector(this.x * scalar, this.y * scalar);
     };
 
+
+    /**
+     * Performs dot product between two vectors.
+     * @param {object} vector Passes new object containing x,y value as parameter.
+     * @returns dot product result.
+     */
+    dotProduct = (vector) => {
+
+        return (this.x * vector.x + this.y * vector.y);
+    };
+
+    
     /**
      * @returns length value of given vector |v| = sqrt(x^2 + y^2)
      */

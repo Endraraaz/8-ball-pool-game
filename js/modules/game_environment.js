@@ -27,15 +27,31 @@ class GameEnvironment {
 
         this.stick = new Stick(
             new Vector(413, 413),
-            this.cueBall.onStrike
+            this.cueBall.onStrike.bind(this.cueBall)
         );
+
+    };
+
+    /**
+     * Checks Collisions between balls.
+     */
+    checkCollisions = () => {
+
+        for (let i = 0; i < this.balls.length; i++) {
+            for (let j = i + 1; j < this.balls.length; j++) {
+                const thisBall = this.balls[i];
+                const thatBall = this.balls[j];
+                thisBall.collideWithBall(thatBall);
+            };
+        };
     };
 
     /**
      * Updates game objects in game environment as per events occurred in game.
      */
     update = () => {
-        this.stick.update();
+
+        this.checkCollisions();
 
         this.balls.forEach(ballSelect => {
             ballSelect.update(DELTA);
@@ -44,6 +60,8 @@ class GameEnvironment {
         if (!this.ballsMoving() && this.stick.striked) {
             this.stick.reposition(this.cueBall.position);
         };
+
+        this.stick.update();
     };
 
     /**
@@ -51,20 +69,30 @@ class GameEnvironment {
      */
     draw = () => {
         canvas.drawImage(sprites.background, { x: 0, y: 0 });
-        this.stick.draw();
-
+        
         this.balls.forEach(ballSelect => {
             ballSelect.draw();
         });
+
+        this.stick.draw();
     };
 
     /**
      * 
-     * @returns state of ball whether moving or stationary.
+     * @returns state of balls whether moving or stationary.
      */
     ballsMoving = () => {
 
-        return this.cueBall.moving;
+        let movingBalls = false;
+
+        this.balls.forEach(ball => {
+            if (ball.moving) {
+                movingBalls = true;
+                return false;
+            };
+        });
+
+        return movingBalls;
     };
 
 };

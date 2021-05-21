@@ -52,6 +52,9 @@ class Stick {
      * Increases power by certain value.
      */
     increasePower = () => {
+        if(this.power > MAX_POWER){
+            return;
+        }
         this.power += POWER;
         this.origin.x += POSITION_CHANGE;
     };
@@ -74,6 +77,7 @@ class Stick {
     reposition = (position) => {
         this.position = position.copy();
         this.origin = STICK_ORIGIN.copy();
+        this.striked = false;
     };
 
 };
