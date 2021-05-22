@@ -113,21 +113,25 @@ class Ball {
         let collided = false;
     
         if(this.position.y <= table.topY + BALL_RADIUS){
+            this.position.y = table.topY + BALL_RADIUS;
             this.velocity = new Vector(this.velocity.x, -this.velocity.y);
             collided = true;
         };
     
         if(this.position.x >= table.rightX - BALL_RADIUS){
+            this.position.x = table.rightX - BALL_RADIUS;
             this.velocity = new Vector(-this.velocity.x, this.velocity.y);
             collided = true;
         };
     
         if(this.position.y >= table.bottomY - BALL_RADIUS){
+            this.position.y = table.bottomY - BALL_RADIUS;
             this.velocity = new Vector(this.velocity.x, -this.velocity.y);
             collided = true;
         };
     
         if(this.position.x <= table.leftX + BALL_RADIUS){
+            this.position.x = table.leftX + BALL_RADIUS;
             this.velocity = new Vector(-this.velocity.x, this.velocity.y);
             collided = true;
         };
