@@ -30,6 +30,13 @@ class GameEnvironment {
             this.cueBall.onStrike.bind(this.cueBall)
         );
 
+        this.table = {
+            topY: 57,
+            rightX: 1443,
+            bottomY: 768,
+            leftX: 57
+        }; 
+
     };
 
     /**
@@ -38,10 +45,11 @@ class GameEnvironment {
     checkCollisions = () => {
 
         for (let i = 0; i < this.balls.length; i++) {
+            this.balls[i].collideWithTable(this.table);
             for (let j = i + 1; j < this.balls.length; j++) {
-                const thisBall = this.balls[i];
-                const thatBall = this.balls[j];
-                thisBall.collideWithBall(thatBall);
+                let firstCollidingBall = this.balls[i];
+                let secondCollidingBall = this.balls[j];
+                firstCollidingBall.collideWithBall(secondCollidingBall);
             };
         };
     };
@@ -78,7 +86,6 @@ class GameEnvironment {
     };
 
     /**
-     * 
      * @returns state of balls whether moving or stationary.
      */
     ballsMoving = () => {

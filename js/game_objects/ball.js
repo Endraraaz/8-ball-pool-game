@@ -45,14 +45,14 @@ class Ball {
 
     
     /**
-     * 
-     * @param {object} thatBall Provides x,y coordinates as velocity of ball.
+     * Checks collisions betweeen balls.
+     * @param {object} secondCollidingBall Provides x,y coordinates as velocity of ball.
      * @returns Exits function if there is no collision.
      */
-    collideWithBall = (thatBall) => {
+    collideWithBall = (secondCollidingBall) => {
 
         // Find normal vector between two colliding balls.
-        const normalVector = this.position.subtract(thatBall.position);
+        const normalVector = this.position.subtract(secondCollidingBall.position);
 
         // Find distance between two balls.
         const distance = normalVector.length();
@@ -65,7 +65,7 @@ class Ball {
         // Solves overlapping of balls
         const minimumTranslationDistance = normalVector.multiply((BALL_DIAMETER - distance) / distance);
         this.position = this.position.add(minimumTranslationDistance.multiply(1/2));
-        thatBall.position = thatBall.position.subtract(minimumTranslationDistance.multiply(1/2));
+        secondCollidingBall.position = secondCollidingBall.position.subtract(minimumTranslationDistance.multiply(1/2));
 
         // Find unit normal vector between two colliding balls.
         const unitNormalVector = normalVector.multiply(1 / normalVector.length());
@@ -76,8 +76,8 @@ class Ball {
         // Project velocities onto the unit normal vector and unit tangent vectors.
         const velocityOneToNormalVector = unitNormalVector.dotProduct(this.velocity);
         const velocityOneToTangentVector = unitTangentVector.dotProduct(this.velocity);
-        const velocityTwoToNormalVector = unitNormalVector.dotProduct(thatBall.velocity);
-        const velocityTwoToTangentVector = unitTangentVector.dotProduct(thatBall.velocity);
+        const velocityTwoToNormalVector = unitNormalVector.dotProduct(secondCollidingBall.velocity);
+        const velocityTwoToTangentVector = unitTangentVector.dotProduct(secondCollidingBall.velocity);
 
         // Find new normal velocities, equal mass so same as old.
         let velocityOneToNormalVectorNew = velocityTwoToNormalVector;
@@ -91,11 +91,51 @@ class Ball {
 
         // Update final velocities of colliding balls.
         this.velocity = velocityOneToNormalVectorNew.add(velocityOneToTangentVectorNew);
-        thatBall.velocity = velocityTwoToNormalVectorNew.add(velocityTwoToTangentVectorNew);
+        secondCollidingBall.velocity = velocityTwoToNormalVectorNew.add(velocityTwoToTangentVectorNew);
 
         this.moving = true;
-        thatBall.moving = true;
+        secondCollidingBall.moving = true;
 
+    };
+
+    /**
+     * Checks collision of balls with table inner collision edges.
+     * @param {object} table Provides object with pool table inner collision edges value.
+     * @returns Exits if ball is not moving.
+     */
+    collideWithTable = (table) => {
+
+        if(!this.moving){
+            
+            return;
+        };
+    
+        let collided = false;
+    
+        if(this.position.y <= table.topY + BALL_RADIUS){
+            this.velocity = new Vector(this.velocity.x, -this.velocity.y);
+            collided = true;
+        };
+    
+        if(this.position.x >= table.rightX - BALL_RADIUS){
+            this.velocity = new Vector(-this.velocity.x, this.velocity.y);
+            collided = true;
+        };
+    
+        if(this.position.y >= table.bottomY - BALL_RADIUS){
+            this.velocity = new Vector(this.velocity.x, -this.velocity.y);
+            collided = true;
+        };
+    
+        if(this.position.x <= table.leftX + BALL_RADIUS){
+            this.velocity = new Vector(-this.velocity.x, this.velocity.y);
+            collided = true;
+        };
+    
+        if(collided){
+            this.velocity = this.velocity.multiply(FRICTION);
+        };
+    
     };
 
 };
