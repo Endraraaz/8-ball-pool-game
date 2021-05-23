@@ -74,13 +74,18 @@ class Vector {
         return (this.x * vector.x + this.y * vector.y);
     };
 
-    
+
     /**
      * @returns length value of given vector |v| = sqrt(x^2 + y^2)
      */
     length = () => {
 
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+    };
+
+    distanceFrom = (vector) => {
+
+        return this.subtract(vector).length();
     };
 
 };

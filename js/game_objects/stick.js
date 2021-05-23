@@ -3,7 +3,6 @@
  */
 class Stick {
     /**
-     * 
      * @param {object} position Provides x,y coordinates of stick position.
      * @param {method} onStrike Passes onStrike method of instance of Ball class.
      */
@@ -18,8 +17,13 @@ class Stick {
 
     /**
      * Updates stick position after every strike occurs to position of cue ball.
+     * @returns Exits if ball is striked and is in moving state.
      */
     update = () => {
+
+        if (this.striked) {
+            return;
+        };
 
         if (mouse.leftButton.down) {
             this.increasePower();
@@ -52,7 +56,7 @@ class Stick {
      * Increases power by certain value.
      */
     increasePower = () => {
-        if(this.power > MAX_POWER){
+        if (this.power > MAX_POWER) {
             return;
         }
         this.power += POWER;

@@ -8,17 +8,45 @@ const COLOR = {
     WHITE: 4
 };
 
+/**
+ * @const {object} TABLE Provides the four colliding edges of table
+ */
+const TABLE = {
+    topY: 57,
+    rightX: 1443,
+    bottomY: 768,
+    leftX: 57
+};
 
 /**
  * @const  {object} BALL_ORIGIN Assigns origin x,y coordinates of ball
  * @const {number} FRICTION Assigns constant value 0.98 to calculate the drag to stop the moving ball.
  * @const {number} BALL_DIAMETER Assigns constant value 38 as ball diameter.
  * @const {number} BALL_RADIUS Assigns ball radius value.
+ * @const {Array} BALLS Provides the initial positions and color of balls.
  */
 const BALL_ORIGIN = new Vector(25, 25);
 const FRICTION = 0.98;
 const BALL_DIAMETER = 38;
 const BALL_RADIUS = BALL_DIAMETER / 2;
+const BALLS = [
+    [new Vector(1022, 413), COLOR.YELLOW], //1
+    [new Vector(1056, 393), COLOR.RED],    //2
+    [new Vector(1056, 433), COLOR.YELLOW], //3
+    [new Vector(1090, 374), COLOR.RED],    //4
+    [new Vector(1090, 413), COLOR.BLACK],  //5
+    [new Vector(1090, 452), COLOR.RED],    //6
+    [new Vector(1126, 354), COLOR.YELLOW], //7
+    [new Vector(1126, 393), COLOR.YELLOW], //8
+    [new Vector(1126, 433), COLOR.RED],    //9
+    [new Vector(1126, 472), COLOR.YELLOW], //10
+    [new Vector(1162, 335), COLOR.RED],    //11
+    [new Vector(1162, 374), COLOR.YELLOW], //12
+    [new Vector(1162, 413), COLOR.RED],    //13
+    [new Vector(1162, 452), COLOR.YELLOW], //14
+    [new Vector(1162, 491), COLOR.RED],    //15
+    [new Vector(413, 413), COLOR.WHITE],   //16
+];
 
 
 /**
@@ -36,6 +64,20 @@ const POSITION_CHANGE = 5;
 
 
 /**
- * @const {number} DELTA Assigns constant value 0.01
+ * @const {number} DELTA Assigns constant value 0.01.
  */
 const DELTA = 1 / 120;
+
+/**
+ * @const {number} POCKET_RADIUS Provides area of the pockets to be considered.
+ * @const {Array} POCKETS Provides the coordinates in table where the pockets are.
+ */
+const POCKET_RADIUS = 46;
+const POCKETS = [
+    new Vector(750, 32),
+    new Vector(750, 794),
+    new Vector(62, 62),
+    new Vector(1435, 62),
+    new Vector(62, 762),
+    new Vector(1435, 762)
+];

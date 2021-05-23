@@ -19,7 +19,7 @@ class Canvas {
      * @param {number} rotation Provides angle of rotation about its origin.
      */
     drawImage = (image, position, origin, rotation = 0) => {
-        
+
         if (!position) {
             position = new Vector();
         };
