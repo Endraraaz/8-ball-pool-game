@@ -1,5 +1,5 @@
 /**
- * Tracks Mouse Button State whether pressed or released.
+ * Tracks Button State whether pressed or released.
  */
 class ButtonState {
     constructor() {
