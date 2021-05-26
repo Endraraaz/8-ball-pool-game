@@ -8,8 +8,8 @@ assetsLoadingLoop = (gameCallback) => {
 
     if (assetsStillLoading) {
         requestAnimationFrame(assetsLoadingLoop.bind(gameCallback));
-    }
-    else {
+    } else {
+        requestAnimationFrame(poolGame.mainMenu.load.bind(this.mainMenu));
         gameCallback;
     };
 };
@@ -33,12 +33,22 @@ loadAssets = (gameCallback) => {
         return spriteImage;
     };
 
-    sprites.background = loadSprites('board.png');
+    sprites.mainMenuBackground = loadSprites('menu_bg.png');
+    sprites.newGameButton = loadSprites('new_game.png');
+    sprites.newGameButtonHover = loadSprites('new_game_hover.png');
+    sprites.controlsButton = loadSprites('controls.png');
+    sprites.controlsButtonHover = loadSprites('controls_hover.png');
+    sprites.resumeGameButton = loadSprites('resume_game.png');
+    sprites.resumeGameButtonHover = loadSprites('resume_game_hover.png');
+    sprites.backButton = loadSprites('back_button.png');
+    sprites.backButtonHover = loadSprites('back_button_hover.png');
+    sprites.controlsInstructions = loadSprites('controls_info.png');
+    sprites.background = loadSprites('table.png');
     sprites.stick = loadSprites('stick.png');
-    sprites.cueBall = loadSprites('cue-ball.png');
-    sprites.blackBall = loadSprites('black-ball.png');
-    sprites.yellowBall = loadSprites('yellow-ball.png');
-    sprites.redBall = loadSprites('red-ball.png');
+    sprites.cueBall = loadSprites('cue_ball.png');
+    sprites.blackBall = loadSprites('black_ball.png');
+    sprites.yellowBall = loadSprites('yellow_ball.png');
+    sprites.redBall = loadSprites('red_ball.png');
 
     /**
      * Calls method start in instance of PoolGame class.
