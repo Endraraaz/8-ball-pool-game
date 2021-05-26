@@ -13,6 +13,7 @@ class Stick {
         this.power = 0;
         this.onStrike = onStrike;
         this.striked = false;
+        this.visible = true;
     };
 
     /**
@@ -22,19 +23,30 @@ class Stick {
     update = () => {
 
         if (this.striked) {
+            this.visible = false;
             return;
         };
 
-        if (mouse.leftButton.down) {
+        if (keyboard.down(KEYS.W) && KEYBOARD_INPUT_ON) {
             this.increasePower();
-        } else if (this.power > 0) {
+        } else if (keyboard.down(KEYS.S) && KEYBOARD_INPUT_ON) {
+            this.decreasePower();
+        } else if (this.power > 0 && mouse.leftButton.down) {
             this.strike();
+            // poolGame.gameRules.turnPlayed = true;
         };
 
+        this.visible = true;
         this.updateRotation();
     };
 
+    /**
+     * Draws game object stick to canvas. 
+     * @returns Exits if stick state is set to not visible.
+     */
     draw = () => {
+        if (!this.visible)
+            return;
         canvas.drawImage(sprites.stick, this.position, this.origin, this.rotation);
     };
 
@@ -61,6 +73,18 @@ class Stick {
         }
         this.power += POWER;
         this.origin.x += POSITION_CHANGE;
+    };
+
+
+    /**
+    * Increases power by certain value.
+    */
+    decreasePower = () => {
+        if (this.power < 0) {
+            return;
+        }
+        this.power -= POWER;
+        this.origin.x -= POSITION_CHANGE;
     };
 
     /**

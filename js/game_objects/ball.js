@@ -13,6 +13,7 @@ class Ball {
         this.sprite = getBallSpritesByColor(color);
         this.visible = true;
         this.color = color;
+        this.inHole = false;
 
     };
 
@@ -67,7 +68,7 @@ class Ball {
      * @param {object} secondCollidingBall Provides x,y coordinates as velocity of ball.
      * @returns Exits function if the ball is pocketted or there is no collision.
      */
-    collideWithBall = (secondCollidingBall) => {
+    collideWithBall = (firstCollidingBall, secondCollidingBall) => {
 
         if (!this.visible || !secondCollidingBall.visible) {
 
@@ -84,6 +85,9 @@ class Ball {
 
             return;
         };
+
+        //collision validity
+        // poolGame.gameRules.checkCollisionValidity(firstCollidingBall, secondCollidingBall);
 
         // Solves overlapping of balls
         const minimumTranslationDistance = normalVector.multiply((BALL_DIAMETER - distance) / distance);
@@ -144,7 +148,8 @@ class Ball {
 
         this.visible = false;
         this.moving = false;
-
+        this.inHole = true;
+        // poolGame.gameRules.checkBallInHole(this);
     };
 
     /**
