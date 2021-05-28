@@ -14,7 +14,8 @@ class PoolGame {
 
         this.initMenu();
         this.gameEnvironment = new GameEnvironment();
-
+        this.gameEnvironment.cueBall.position = new Vector(413, 413);
+        this.gameRules = new GameRules();
     };
 
     /**

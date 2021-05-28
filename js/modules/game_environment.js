@@ -10,6 +10,28 @@ class GameEnvironment {
         this.cueBall = this.balls.find(ballSelect => ballSelect.color === COLOR.WHITE);
         this.stick = new Stick(new Vector(413, 413), this.cueBall.onStrike);
         this.table = TABLE;
+        this.cueBallInHand = false;
+        this.gameOver = false;
+
+    };
+
+    /**
+     * Reset Game objects properties after match is over.
+     */
+    reset = () => {
+        this.gameOver = false;
+
+        this.balls = BALLS.map(ballSelect => new Ball(...ballSelect));
+        this.cueBall = this.balls.find(ballSelect => ballSelect.color === COLOR.WHITE);
+        this.cueBall.position = new Vector(413, 413);
+
+        this.balls.forEach(ballSelect => {
+            ballSelect.reset();
+        });
+
+        this.stick = new Stick(new Vector(413, 413), this.cueBall.onStrike);
+        this.stick.reset();
+
     };
 
     /**
@@ -17,16 +39,19 @@ class GameEnvironment {
      */
     checkCollisions = () => {
 
+        if (poolGame.gameRules.foul && this.cueBallInHand) {
+
+            return;
+        };
+
         for (let i = 0; i < this.balls.length; i++) {
             this.balls[i].checkBallInPocket();
-            // if (this.balls[i].checkBallInPocket()) {
-            //     poolGame.gameRules.checkBallInHole(this.balls[i]);
-            // };
             this.balls[i].collideWithTable(this.table);
             for (let j = i + 1; j < this.balls.length; j++) {
                 let firstCollidingBall = this.balls[i];
                 let secondCollidingBall = this.balls[j];
-                firstCollidingBall.collideWithBall(firstCollidingBall, secondCollidingBall);
+                firstCollidingBall.collideWithBall(secondCollidingBall);
+
             };
         };
     };
@@ -36,23 +61,26 @@ class GameEnvironment {
      */
     update = () => {
 
+        if (!this.ballsMoving() && this.stick.striked) {
+            poolGame.gameRules.updateTurnOutcome();
+
+            if (poolGame.gameRules.foul) {
+                this.ballInHand();
+            } else {
+                this.stick.reposition(this.cueBall.position);
+            };
+
+
+        };
+
         this.checkCollisions();
 
         this.balls.forEach(ballSelect => {
             ballSelect.update(DELTA);
         });
 
-        if (!this.ballsMoving() && this.stick.striked) {
-            // poolGame.gameRules.updateTurnOutcome();
-
-            // if (poolGame.gameRules.foul) {
-            //     this.ballInHand();
-            // };
-
-            this.stick.reposition(this.cueBall.position);
-        };
-
         this.stick.update();
+
     };
 
     /**
@@ -61,9 +89,17 @@ class GameEnvironment {
     draw = () => {
         canvas.drawImage(sprites.background, { x: 0, y: 0 });
 
+        // If match is over displays match outcome otherwise turn of player.
+        if (this.gameOver) {
+            poolGame.gameRules.drawMatchOutcome();
+        } else {
+            poolGame.gameRules.drawPlayerTurn();
+        };
+
         this.balls.forEach(ballSelect => {
             ballSelect.draw();
         });
+
 
         this.stick.draw();
     };
@@ -78,7 +114,6 @@ class GameEnvironment {
         this.balls.forEach(ball => {
             if (ball.moving) {
                 movingBalls = true;
-                return false;
             };
         });
 
@@ -101,41 +136,51 @@ class GameEnvironment {
         };
     };
 
-    // ballInHand = () => {
+    /**
+     * Executes when foul is detected and provides cue ball in hand feature.
+     */
+    ballInHand = () => {
 
-    //     KEYBOARD_INPUT_ON = false;
-    //     this.stick.visible = false;
-    //     if (!mouse.leftButton.down) {
-    //         this.cueBall.position = mouse.position;
-    //     } else {
-    //         let ballsOverlap = this.cueBallOverlapsBalls();
+        this.cueBallInHand = true;
+        KEYBOARD_INPUT_ON = false;
+        this.stick.visible = false;
+        if (!mouse.leftButton.down) {
+            this.cueBall.position = mouse.position;
+        } else {
+            let ballsOverlap = this.cueBallOverlapsBalls();
 
-    //         if (!poolGame.gameRules.isOutsideBorder(mouse.position, this.cueBall.origin) &&
-    //             !poolGame.gameRules.isInsideHole(mouse.position) && !ballsOverlap) {
-    //             KEYBOARD_INPUT_ON = true;
-    //             keyboard.reset();
-    //             mouse.reset();
-    //             this.cueBall.position = mouse.position;
-    //             this.cueBall.inHole = false;
-    //             poolGame.gameRules.foul = false;
-    //             this.stick.position = this.cueBall.position;
-    //             this.stick.visible = true;
-    //         };
-    //     };
-    // };
+            if (!poolGame.gameRules.isOutsideBorder(mouse.position, this.cueBall.origin) &&
+                !poolGame.gameRules.isInsidePocket(mouse.position) &&
+                !ballsOverlap) {
+                KEYBOARD_INPUT_ON = true;
+                keyboard.reset();
+                mouse.reset();
+                this.cueBall.position = mouse.position;
+                this.cueBall.inPocket = false;
+                poolGame.gameRules.foul = false;
+                this.stick.position = this.cueBall.position;
+                this.stick.visible = true;
+                this.cueBallInHand = false;
+            };
+        };
+    };
 
-    // cueBallOverlapsBalls = () => {
+    /**
+     * Checks if cue ball overlaps with other balls when placing freely in ball in hand state.
+     * @returns boolean value.
+     */
+    cueBallOverlapsBalls = () => {
 
-    //     let ballsOverlap = false;
-    //     for (let i = 0; i < this.balls.length; i++) {
-    //         if (this.cueBall !== this.balls[i]) {
-    //             if (this.cueBall.position.distanceFrom(this.balls[i].position) < BALL_DIAMETER) {
-    //                 ballsOverlap = true;
-    //             };
-    //         };
-    //     };
+        let ballsOverlap = false;
+        for (let i = 0; i < this.balls.length; i++) {
+            if (this.cueBall !== this.balls[i]) {
+                if (this.cueBall.position.distanceFrom(this.balls[i].position) < BALL_DIAMETER) {
+                    ballsOverlap = true;
+                };
+            };
+        };
 
-    //     return ballsOverlap;
-    // };
+        return ballsOverlap;
+    };
 
 };

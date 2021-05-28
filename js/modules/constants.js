@@ -55,16 +55,16 @@ const BALLS = [
  * @const {number} MAX_POWER Assigns maximum power value the stick can hit with.
  * @const {number} POSITION_CHANGE Assigns position change value on increase in power.
  */
-const STICK_ORIGIN = new Vector(1030, 11);
-const STICK_STRIKE_ORIGIN = new Vector(1010, 11);
-const POWER = 120;
+const STICK_ORIGIN = new Vector(970, 11);
+const STICK_STRIKE_ORIGIN = new Vector(950, 11);
+const POWER = 110;
 const MAX_POWER = 6000;
 const POSITION_CHANGE = 2;
 
 /**
  * @const {number} DELTA Assigns constant value 0.01.
  */
-const DELTA = 1 / 120;
+const DELTA = 1 / 100;
 
 /**
  * @const {number} POCKET_RADIUS Provides area of the pockets to be considered.
