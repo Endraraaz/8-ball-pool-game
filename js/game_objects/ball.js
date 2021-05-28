@@ -8,12 +8,13 @@ class Ball {
      */
     constructor(position, color) {
         this.position = position;
+        this.origin = BALL_ORIGIN;
         this.velocity = new Vector();
         this.moving = false;
         this.sprite = getBallSpritesByColor(color);
         this.visible = true;
         this.color = color;
-        this.inHole = false;
+        this.inPocket = false;
 
     };
 
@@ -53,6 +54,18 @@ class Ball {
     };
 
     /**
+     * Reset Properties of balls after match over.
+     */
+    reset = () => {
+        this.inPocket = false;
+        this.moving = false;
+        this.velocity = new Vector();
+        this.origin = BALL_ORIGIN;
+        this.position = this.position;
+        this.visible = true;
+    };
+
+    /**
      * Gives velocity to ball when striked and sets ball state to moving.
      * @param {number} power Provides power value by how much to strike the cue-ball with stick.
      * @param {number} rotation Provides rotation value of the stick.
@@ -68,7 +81,7 @@ class Ball {
      * @param {object} secondCollidingBall Provides x,y coordinates as velocity of ball.
      * @returns Exits function if the ball is pocketted or there is no collision.
      */
-    collideWithBall = (firstCollidingBall, secondCollidingBall) => {
+    collideWithBall = (secondCollidingBall) => {
 
         if (!this.visible || !secondCollidingBall.visible) {
 
@@ -85,9 +98,6 @@ class Ball {
 
             return;
         };
-
-        //collision validity
-        // poolGame.gameRules.checkCollisionValidity(firstCollidingBall, secondCollidingBall);
 
         // Solves overlapping of balls
         const minimumTranslationDistance = normalVector.multiply((BALL_DIAMETER - distance) / distance);
@@ -123,11 +133,14 @@ class Ball {
         this.moving = true;
         secondCollidingBall.moving = true;
 
+        // Checks fouls when collision occur between balls.
+        poolGame.gameRules.checkCollisionValidity(this, secondCollidingBall);
+
     };
 
     /**
      * Checks if ball entered the Pocket.
-     * @returns Exits if ball is already pocketted or is not pocketted.
+     * @returns Exits if ball is already pocketted or not pocketted.
      */
     checkBallInPocket = () => {
 
@@ -146,10 +159,15 @@ class Ball {
             return;
         };
 
-        this.visible = false;
-        this.moving = false;
-        this.inHole = true;
-        // poolGame.gameRules.checkBallInHole(this);
+        this.inPocket = true;
+        setTimeout(() => {
+            this.visible = false;
+            this.moving = false;
+        }, 100);
+        // Checks fouls in pocketted balls.
+        poolGame.gameRules.checkValidityOfBallInPocket(this);
+
+        return;
     };
 
     /**

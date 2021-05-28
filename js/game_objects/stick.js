@@ -33,7 +33,8 @@ class Stick {
             this.decreasePower();
         } else if (this.power > 0 && mouse.leftButton.down) {
             this.strike();
-            // poolGame.gameRules.turnPlayed = true;
+            poolGame.gameRules.turnPlayed = true;
+
         };
 
         this.visible = true;
@@ -48,6 +49,18 @@ class Stick {
         if (!this.visible)
             return;
         canvas.drawImage(sprites.stick, this.position, this.origin, this.rotation);
+    };
+
+    /**
+     * Resets Properties of stick after match over.
+     */
+    reset = () => {
+        this.position = this.cueBall.position;
+        this.origin = STICK_ORIGIN.copy();
+        this.power = 0;
+        this.striked = false;
+        this.visible = true;
+
     };
 
     /**
@@ -96,6 +109,7 @@ class Stick {
         this.power = 0;
         this.origin = STICK_STRIKE_ORIGIN.copy();
         this.striked = true;
+        poolGame.gameRules.turnPlayed = true;
     };
 
     /**
